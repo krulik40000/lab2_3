@@ -46,4 +46,18 @@ public class SimilarityFinderTest {
         });
         Assert.assertThat(similarityFinder.calculateJackardSimilarity(seq1, seq1), is(equalTo(1d)));
     }
+    
+    @Test
+    public void testJaccardSimilarityPartSameSeq() {
+        similarityFinder = new SimilarityFinder((key, seq) -> {
+            if (key == seq[0] || key == seq[1] || key == seq[2])
+                return SearchResult.builder()
+                                   .withFound(true)
+                                   .build();
+            return SearchResult.builder()
+                               .withFound(false)
+                               .build();
+        });
+        Assert.assertThat(0.4d, is(equalTo(similarityFinder.calculateJackardSimilarity(seq3, seq1))));
+    }
 }
